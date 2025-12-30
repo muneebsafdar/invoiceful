@@ -1,11 +1,22 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Zap, FileText, DollarSign, Clock, Shield, Sparkles } from 'lucide-react';
+import { useUser, SignInButton, SignUpButton } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
+
 
 const PreciseBillLanding = () => {
   const [billingCycle, setBillingCycle] = useState('monthly');
+  const router= useRouter();
+  const user :any = useUser()
+
+  useEffect(()=>{
+    if(user.isSignedIn){
+      router.push('/dashboard')
+    }
+  },[user])
 
   const features = [
     {
@@ -86,20 +97,24 @@ const PreciseBillLanding = () => {
           </div>
         </div>
         <div className="flex gap-3">
-          <motion.button
-            className="px-6 py-2 text-gray-700 font-medium hover:text-purple-600"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Sign In
-          </motion.button>
-          <motion.button
-            className="px-6 py-2 bg-linear-to-r from-purple-600 to-blue-600 text-white rounded-lg font-medium shadow-lg shadow-purple-500/30"
-            whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(147, 51, 234, 0.4)" }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Get Started
-          </motion.button>
+          <SignInButton mode="modal">
+            <motion.button
+              className="px-6 py-2 text-gray-700 font-medium hover:text-purple-600"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Sign In
+            </motion.button>
+          </SignInButton>
+          <SignUpButton mode="modal">
+            <motion.button
+              className="px-6 py-2 bg-linear-to-r from-purple-600 to-blue-600 text-white rounded-lg font-medium shadow-lg shadow-purple-500/30"
+              whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(147, 51, 234, 0.4)" }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Get Started
+            </motion.button>
+          </SignUpButton>
         </div>
       </nav>
 
@@ -133,13 +148,15 @@ const PreciseBillLanding = () => {
               Transform your billing process with AI-powered invoice generation. Professional, accurate, and lightning fast.
             </p>
             <div className="flex gap-4">
-              <motion.button
-                className="px-8 py-4 bg-linear-to-r from-purple-600 to-blue-600 text-white rounded-lg font-semibold shadow-xl shadow-purple-500/30"
-                whileHover={{ scale: 1.05, boxShadow: "0 25px 50px rgba(147, 51, 234, 0.4)" }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Start Free Trial
-              </motion.button>
+              <SignUpButton mode="modal">
+                <motion.button
+                  className="px-8 py-4 bg-linear-to-r from-purple-600 to-blue-600 text-white rounded-lg font-semibold shadow-xl shadow-purple-500/30"
+                  whileHover={{ scale: 1.05, boxShadow: "0 25px 50px rgba(147, 51, 234, 0.4)" }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Start Free Trial
+                </motion.button>
+              </SignUpButton>
               <motion.button
                 className="px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:border-purple-600 hover:text-purple-600"
                 whileHover={{ scale: 1.05 }}
@@ -404,17 +421,19 @@ const PreciseBillLanding = () => {
                       </li>
                     ))}
                   </ul>
-                  <motion.button
-                    className={`w-full py-4 rounded-lg font-semibold ${
-                      plan.popular
-                        ? 'bg-linear-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-500/30'
-                        : 'border-2 border-gray-300 text-gray-700 hover:border-purple-600 hover:text-purple-600'
-                    }`}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    Get Started
-                  </motion.button>
+                  <SignUpButton mode="modal">
+                    <motion.button
+                      className={`w-full py-4 rounded-lg font-semibold ${
+                        plan.popular
+                          ? 'bg-linear-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-500/30'
+                          : 'border-2 border-gray-300 text-gray-700 hover:border-purple-600 hover:text-purple-600'
+                      }`}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      Get Started
+                    </motion.button>
+                  </SignUpButton>
                 </motion.div>
               </motion.div>
             ))}
